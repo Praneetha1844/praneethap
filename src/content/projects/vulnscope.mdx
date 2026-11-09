@@ -1,4 +1,4 @@
-> **Status:** implementation complete, benchmarks not yet published. This page describes the design intent and scope. The repository README is the source of truth for the exact behaviour.
+> **Status:** the implementation and its test suite are included, but they have not yet been run in a clean environment, and benchmarks are not yet published. This page describes the design and scope; the repository README is the source of truth for the exact behaviour.
 
 ## Problem
 
@@ -11,7 +11,7 @@ Vulnscope sits between the two: it triages findings and proposes remediations, a
 1. **Collect** findings from static analysis and dependency scans.
 2. **Triage** them: group duplicates and prioritise.
 3. **Propose** a remediation for each finding, with an **explanation** of why it applies.
-4. **Review.** A person accepts, edits or rejects each suggestion.
+4. **Review.** A person accepts or rejects each suggestion. Suggestions are stored as pending and are never applied to code automatically.
 
 ## Design considerations
 
@@ -33,5 +33,5 @@ At HSBC I contribute to AI use cases that remediate vulnerabilities reported by 
 ## Roadmap
 
 - Publish an evaluation on a fixed set of public repositories.
-- Track which suggestions reviewers accept or reject, and why.
-- Improve grouping of related findings.
+- Convert CVSS vector strings to numeric scores.
+- Reachability analysis beyond Python, and optional known-exploited and EPSS feeds.

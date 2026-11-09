@@ -1,4 +1,4 @@
-> **Status:** implementation complete, benchmarks not yet published. This page describes the design intent and scope. The repository README is the source of truth for the exact behaviour.
+> **Status:** the implementation and its test suite are included, but they have not yet been run in a clean environment, and benchmarks are not yet published. This page describes the design and scope; the repository README is the source of truth for the exact behaviour.
 
 ## Problem
 
@@ -27,6 +27,6 @@ Driftwatch is a small MLOps loop that closes that gap: **train, serve, monitor d
 
 ## Roadmap
 
-- Publish a worked example with a documented dataset and the drift scenarios used.
-- Add monitoring of prediction quality when labels become available.
-- Document the retraining policy and its trade-offs.
+- Publish a worked example on a real dataset with the method and results written up.
+- Ingest delayed labels to track label drift and live model quality.
+- Multivariate drift, per-feature thresholds, and shadow or canary serving of a candidate model.

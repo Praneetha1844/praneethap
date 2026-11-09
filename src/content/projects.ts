@@ -1,7 +1,7 @@
 import type { Project } from "./types";
 
 const GITHUB = "https://github.com/Praneetha1844";
-const STATUS_BUILT = "Implementation complete; benchmarks not yet published";
+const STATUS_BUILT = "Implemented and documented; not yet run in a clean environment; no benchmarks";
 
 export const projects: Project[] = [
   {

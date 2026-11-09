@@ -1,4 +1,4 @@
-> **Status:** implementation complete, benchmarks not yet published. This page describes the design intent and scope. The repository README is the source of truth for the exact behaviour.
+> **Status:** the implementation and its test suite are included, but they have not yet been run in a clean environment, and benchmarks are not yet published. This page describes the design and scope; the repository README is the source of truth for the exact behaviour.
 
 ## Problem
 
@@ -8,9 +8,9 @@ Planlens is a query-plan analyser and index advisor that tries to make that read
 
 ## Approach
 
-1. **Read** the plan PostgreSQL produces for a query.
-2. **Explain** where the work happens: which operations dominate and which scans touch many rows to return few.
-3. **Suggest** indexes that could change the plan, with the reasoning.
+1. **Read** the `EXPLAIN (FORMAT JSON)` plan PostgreSQL produces for a query.
+2. **Explain** where the work happens, using a small set of detectors such as selective sequential scans, sorts that spill to disk and large gaps between estimated and actual rows.
+3. **Suggest** btree indexes that could change the plan, with the reasoning.
 
 The goal is advice a person can check, not a black box: each suggestion points at the part of the plan that motivated it.
 
@@ -26,11 +26,12 @@ Relational design, SQL and query optimisation are core skills for data engineeri
 
 ## Limitations
 
-- Suggestions are advisory and are not validated against every workload.
+- Suggestions are advisory heuristics over a single plan and are not validated against every workload.
+- The test plans are hand-written samples, not captured from a live server.
 - No benchmark results are published yet. Any speed-up claim will appear only with the data, the settings and the commands needed to reproduce it.
 
 ## Roadmap
 
-- Publish a reproducible benchmark with a generated dataset.
-- Show before-and-after plans for each suggestion.
-- Account for write cost and index size in the advice.
+- Capture real plans from several PostgreSQL versions as test fixtures.
+- Publish a reproducible benchmark with its method and spread.
+- Add partial and covering index suggestions, and read existing indexes directly from the catalogue.

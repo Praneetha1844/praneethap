@@ -1,4 +1,4 @@
-> **Status:** implementation complete, benchmarks not yet published. This page describes the design intent and scope. The repository README is the source of truth for the exact components.
+> **Status:** the implementation and its test suite are included, but they have not yet been run in a clean environment, and benchmarks are not yet published. This page describes the design and scope; the repository README is the source of truth for the exact behaviour.
 
 ## Problem
 
@@ -11,7 +11,7 @@ Streamforge is a small, end-to-end platform built to make those seams explicit a
 Records flow through a sequence of stages, each with a narrow job:
 
 1. **Ingest** events as they arrive.
-2. **Validate** them against an explicit contract, so bad records are rejected or quarantined with a reason instead of silently flowing on.
+2. **Validate** them against an explicit, versioned contract, so bad records are kept as dead letters with a reason code instead of silently flowing on.
 3. **Transform** valid records into the shapes consumers need.
 4. **Serve** the results through an interface.
 5. **Observe** every stage, so throughput, failures and lag are visible.
@@ -21,7 +21,8 @@ The infrastructure is described as code with **Terraform for Google Cloud**, so 
 ## Design principles
 
 - **Contracts at the boundaries.** Validation sits where data enters, not scattered through the pipeline.
-- **Failures are data.** A rejected record is kept with the reason it was rejected.
+- **Failures are data.** A rejected record is kept with the reason it was rejected, and a replay command republishes it.
+- **At-least-once delivery, idempotent writes.** Redelivery and replay are safe because storage is keyed by event id.
 - **Observability is a feature.** Each stage reports what it processed and what it dropped.
 - **Infrastructure is reviewable.** Changes to the environment go through version control like code.
 
@@ -30,10 +31,12 @@ This mirrors the work I do at HSBC on Google Cloud with Terraform and CI/CD, app
 ## Limitations
 
 - No benchmark results are published yet. Throughput, latency and recovery claims will appear only once they have been measured and can be reproduced.
+- The Terraform has been reviewed by hand but not applied to a real project.
 - It is a learning and demonstration platform, not a production service.
 
 ## Roadmap
 
+- Integration tests for PostgreSQL and Pub/Sub using containers or emulators.
 - Publish reproducible benchmarks with the exact commands used.
-- Add replay of quarantined records.
-- Document operating the platform: runbooks and alert thresholds.
+- Kafka-compatible broker adapter, connection pooling and concurrent message handling.
+- Authentication, rate limiting and pagination for the read API.

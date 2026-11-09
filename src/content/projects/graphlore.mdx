@@ -1,4 +1,4 @@
-> **Status:** implementation complete, benchmarks not yet published. This page describes the design intent and scope. The repository README is the source of truth for the exact behaviour.
+> **Status:** the implementation and its test suite are included, but they have not yet been run in a clean environment, and benchmarks are not yet published. This page describes the design and scope; the repository README is the source of truth for the exact behaviour.
 
 ## Problem
 
@@ -16,7 +16,9 @@ Returning the path matters: a reader can check each hop against the source inste
 
 ## Design considerations
 
-- **Provenance.** Every edge should be traceable to the document it came from.
+- **Provenance.** Every edge must cite a stored chunk of text, so each hop can be checked against its source.
+- **Typed by an ontology.** Entity types and relations are declared up front, and facts that do not fit are rejected.
+- **Abstain over guess.** A question with no supporting path gets "no supported answer".
 - **Errors compound.** A wrong relation early in a path produces a confidently wrong answer, so extraction quality and evaluation matter more than the question-answering step.
 - **Evaluation first.** The project is designed around measuring answer correctness on a labelled question set rather than judging by examples.
 
@@ -28,6 +30,6 @@ Returning the path matters: a reader can check each hop against the source inste
 
 ## Roadmap
 
-- Publish an evaluation on a documented question set.
-- Add confidence scores to edges and paths.
-- Compare answers against a plain text-retrieval baseline.
+- Publish an evaluation on an open dataset, with the method and results written up.
+- Derive edge confidence from extractor agreement and calibrate it on a labelled sample.
+- Passive-voice patterns and simple coreference in the rule-based extractor.
