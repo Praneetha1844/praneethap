@@ -47,7 +47,7 @@
 
 @layer components {
   .link {
-    @apply underline decoration-rule decoration-1 underline-offset-4 transition-colors hover:decoration-accent hover:text-accent;
+    @apply underline decoration-muted decoration-1 underline-offset-4 transition-colors hover:decoration-accent hover:text-accent;
   }
 
   .tag {

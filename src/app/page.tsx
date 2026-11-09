@@ -22,12 +22,12 @@ export default function HomePage() {
     sameAs: profile.links.filter((link) => link.href.startsWith("https://")).map((link) => link.href),
   };
 
+  // "<" is escaped so no string in the data can close the script element.
+  const structuredJson = JSON.stringify(structuredData).replace(/</g, "\\u003c");
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredJson }} />
       <Hero />
       <AboutSection />
       <ExperienceSection />
