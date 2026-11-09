@@ -21,9 +21,9 @@ export const projects: Project[] = [
     name: "Metamorph",
     tagline: "Refactoring assistant that checks LLM refactors by re-running the original tests.",
     summary:
-      "An editor-based tool for refactoring legacy code with a language model. The design principle is that a refactor is only trusted if the original tests still pass.",
+      "A tool for refactoring legacy code with a language model. A refactor is accepted only if the original tests still pass, and each run reports retries, metric changes and a diff.",
     kind: "featured",
-    status: "Editor and local-model flow in place; test-verified refactoring in development",
+    status: STATUS_BUILT,
     repo: `${GITHUB}/Metamorph`,
     tags: ["AI for code", "Refactoring", "Testing", "React"],
     caseStudy: true,
