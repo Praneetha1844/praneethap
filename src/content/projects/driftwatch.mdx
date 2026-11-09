@@ -1,0 +1,32 @@
+> **Status:** implementation complete, benchmarks not yet published. This page describes the design intent and scope. The repository README is the source of truth for the exact behaviour.
+
+## Problem
+
+A model that was accurate when it was trained can quietly get worse as the data it sees changes. Many projects stop at "train and deploy" and never look at what happens afterwards.
+
+Driftwatch is a small MLOps loop that closes that gap: **train, serve, monitor drift, retrain.**
+
+## Approach
+
+1. **Train** a model on a reference dataset and record what the training data looked like.
+2. **Serve** predictions.
+3. **Monitor** incoming data and compare it with the reference to detect drift.
+4. **Retrain** when drift crosses a threshold, so the cycle repeats with fresh data.
+
+## Design considerations
+
+- **Drift is a signal, not a verdict.** Changed inputs do not always mean worse predictions; the project treats drift as a reason to look, and keeps the thresholds explicit.
+- **Reproducibility.** Each model should be traceable to the data and settings that produced it.
+- **Small and inspectable.** The goal is to make the lifecycle understandable end to end rather than to use as many tools as possible.
+
+## Limitations
+
+- Drift detection on inputs alone cannot tell whether accuracy has dropped; that needs labelled outcomes, which often arrive late.
+- No benchmark or evaluation results are published yet.
+- It is a demonstration, not a production machine-learning platform.
+
+## Roadmap
+
+- Publish a worked example with a documented dataset and the drift scenarios used.
+- Add monitoring of prediction quality when labels become available.
+- Document the retraining policy and its trade-offs.

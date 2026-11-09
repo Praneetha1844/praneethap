@@ -1,0 +1,51 @@
+> **Status:** the editor and local-model flow are in place. Test-verified refactoring, the project's central idea, is in development. Benchmarks are not yet published.
+
+## Problem
+
+Language models can rewrite legacy code quickly, and they can just as quickly change its behaviour. A refactor that reads well but breaks a case nobody remembered is worse than no refactor. The useful question is not "can a model refactor this?" but "how do we know the result still does the same thing?"
+
+Metamorph started as my B.Tech final-year project on refactoring legacy code with AI.
+
+## Approach
+
+The principle is simple: **a refactor is trusted only if the original tests still pass.**
+
+What exists today:
+
+- A browser-based code editor.
+- Running code from the editor. JavaScript runs in a sandboxed Web Worker rather than through `eval`.
+- Requesting a refactor from a **local language model served by Ollama**, so source code does not leave the machine.
+
+What the design adds next:
+
+```text
+legacy code + original tests
+        |
+        v
+   model proposes refactor
+        |
+        v
+   run the original tests against the result
+        |
+   pass ---> accept, show the diff
+   fail ---> reject, report which tests broke
+```
+
+## Design considerations
+
+- **Local first.** A local model keeps code private and makes the tool usable on code that cannot be sent to a hosted service.
+- **Tests as the oracle.** Passing tests is necessary, not sufficient: the tests define the behaviour that is protected, and gaps in the tests are gaps in the guarantee. The tool should say so.
+- **Small, reviewable changes.** Smaller refactors are easier to verify and easier for a person to review.
+
+## Limitations
+
+- Test-verified refactoring is not complete yet, so refactors are not currently checked automatically.
+- A passing test suite only protects the behaviour the tests cover.
+- Quality depends on the local model that is used.
+- No benchmark results are published.
+
+## Roadmap
+
+- Run the original test suite against each proposed refactor and report the outcome.
+- Build a small evaluation set of legacy snippets and publish the pass and failure rates with the exact setup.
+- Measure simple quality signals such as complexity before and after.

@@ -1,0 +1,33 @@
+> **Status:** implementation complete, benchmarks not yet published. This page describes the design intent and scope. The repository README is the source of truth for the exact behaviour.
+
+## Problem
+
+Some questions cannot be answered from a single passage. "Which teams use a service that depends on this library?" needs several facts joined together. Searching text finds passages; it does not follow relationships.
+
+Graphlore builds a **knowledge graph** from documents and answers **multi-hop questions** by following relations between entities.
+
+## Approach
+
+1. **Extract** entities and the relations between them from documents.
+2. **Build** a graph that links those entities.
+3. **Answer** a question by finding a path of relations that connects what it asks about, and return the path as evidence.
+
+Returning the path matters: a reader can check each hop against the source instead of trusting a single generated sentence.
+
+## Design considerations
+
+- **Provenance.** Every edge should be traceable to the document it came from.
+- **Errors compound.** A wrong relation early in a path produces a confidently wrong answer, so extraction quality and evaluation matter more than the question-answering step.
+- **Evaluation first.** The project is designed around measuring answer correctness on a labelled question set rather than judging by examples.
+
+## Limitations
+
+- Entity and relation extraction is imperfect and limits everything downstream.
+- No evaluation results are published yet. Accuracy will be reported only after it has been measured on a documented question set.
+- It is a research-style prototype, not a product.
+
+## Roadmap
+
+- Publish an evaluation on a documented question set.
+- Add confidence scores to edges and paths.
+- Compare answers against a plain text-retrieval baseline.

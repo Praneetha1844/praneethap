@@ -1,0 +1,52 @@
+> **Status:** implementation and test suite included; benchmarks not yet published. Packetscape is a compact experimentation tool, not a substitute for ns-3 or a model of any real network stack.
+
+## Problem
+
+Congestion control is easy to describe and hard to build intuition for. Textbook diagrams show a window growing and halving; they do not show what happens when two flows share a queue, when a queue discipline drops early, or when random loss is added.
+
+Packetscape makes those moving parts small enough to read from end to end, so a policy change can be run and compared.
+
+## Approach
+
+A **discrete-event simulator** advances a single clock from event to event. Components are small:
+
+| Part | What it models |
+|---|---|
+| Links | Serialization delay, propagation delay, random loss, one queue per direction |
+| Queues | Drop-tail FIFO and Random Early Detection (RED) |
+| Transport | A TCP-like sender and receiver with cumulative ACKs, fast retransmit and a retransmission timer |
+| Controllers | Fixed window, AIMD (Reno-like) and a simplified CUBIC-style curve |
+| Traffic | TCP-like bulk transfer, constant bit rate and Poisson sources |
+| Metrics | Throughput, loss, delay percentiles and Jain's fairness index |
+
+Scenarios are YAML files that are validated strictly before running: unknown keys and invalid values are rejected with the path of the offending field.
+
+```text
+scenario.yaml -> validate -> build topology and flows -> run events -> metrics -> CSV / plots
+```
+
+## Design decisions
+
+- **Discrete-event instead of time-stepped.** Accuracy does not depend on a step size, and cost scales with events rather than simulated time.
+- **One seed, one random stream per component.** Adding a flow does not reshuffle the randomness seen by existing components, so before-and-after comparisons stay clean and runs are reproducible.
+- **A deliberately simplified transport.** Packet-granular windows and no selective acknowledgements keep each algorithm readable. The cost is cruder recovery after multiple losses in a window, and the documentation says so.
+
+The repository documents these as short decision records and lists what the model does not cover.
+
+## Relation to networking fundamentals
+
+The project connects directly to topics from my CCNA studies: bandwidth versus delay, queueing, tail drop versus early drop, TCP and UDP behaviour, and shortest-path routing.
+
+## Limitations
+
+- Simplified TCP model: no byte streams, no SACK, no delayed ACKs, no connection setup.
+- CUBIC is a simplified curve; there is no BBR or ECN.
+- Static shortest-path routing only; queues are measured in packets.
+- Pure Python and single-threaded, so it suits small scenarios.
+- **No benchmark results are published.** Numbers will appear only with the scenario file, seed and command that produced them.
+
+## Roadmap
+
+- A BBR-style controller and ECN marking.
+- Byte-based queue limits.
+- A multi-seed experiment runner with confidence intervals.

@@ -1,0 +1,37 @@
+> **Status:** implementation complete, benchmarks not yet published. This page describes the design intent and scope. The repository README is the source of truth for the exact behaviour.
+
+## Problem
+
+Static analysis (SAST) and dependency scans produce long lists. Most of the effort goes into deciding which findings are real, which matter, and what a safe fix looks like. Handing that decision entirely to a model is risky; ignoring models entirely wastes a useful assistant.
+
+Vulnscope sits between the two: it triages findings and proposes remediations, and keeps a person in charge.
+
+## Approach
+
+1. **Collect** findings from static analysis and dependency scans.
+2. **Triage** them: group duplicates and prioritise.
+3. **Propose** a remediation for each finding, with an **explanation** of why it applies.
+4. **Review.** A person accepts, edits or rejects each suggestion.
+
+## Design considerations
+
+- **Explainable by default.** A suggestion without a reason is not useful to a reviewer.
+- **Human review is part of the design,** not an optional extra. Nothing is treated as fixed until it has been reviewed.
+- **Public inputs only.** The project is demonstrated on public repositories. It uses no internal data.
+- **Be honest about errors.** False positives and wrong fixes are expected, so the project is built to measure them rather than hide them.
+
+## Connection to my work
+
+At HSBC I contribute to AI use cases that remediate vulnerabilities reported by FOSS and SAST scans. Vulnscope is a separate, public project that explores the same area, built only from public tools and public code.
+
+## Limitations
+
+- Remediation suggestions can be wrong and must be reviewed.
+- No evaluation results are published yet. Detection, acceptance and false-positive rates will be reported only after they have been measured on public repositories, with the method described.
+- It does not replace a security review.
+
+## Roadmap
+
+- Publish an evaluation on a fixed set of public repositories.
+- Track which suggestions reviewers accept or reject, and why.
+- Improve grouping of related findings.

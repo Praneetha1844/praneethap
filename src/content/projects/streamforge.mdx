@@ -1,0 +1,39 @@
+> **Status:** implementation complete, benchmarks not yet published. This page describes the design intent and scope. The repository README is the source of truth for the exact components.
+
+## Problem
+
+Data platforms rarely fail because a single transformation is wrong. They fail at the seams: a producer changes a field, a bad record slips through, a backlog builds up unnoticed, or an environment is rebuilt by hand and drifts from the one before it.
+
+Streamforge is a small, end-to-end platform built to make those seams explicit and observable.
+
+## Approach
+
+Records flow through a sequence of stages, each with a narrow job:
+
+1. **Ingest** events as they arrive.
+2. **Validate** them against an explicit contract, so bad records are rejected or quarantined with a reason instead of silently flowing on.
+3. **Transform** valid records into the shapes consumers need.
+4. **Serve** the results through an interface.
+5. **Observe** every stage, so throughput, failures and lag are visible.
+
+The infrastructure is described as code with **Terraform for Google Cloud**, so an environment can be created, reviewed and rebuilt from the repository rather than from memory.
+
+## Design principles
+
+- **Contracts at the boundaries.** Validation sits where data enters, not scattered through the pipeline.
+- **Failures are data.** A rejected record is kept with the reason it was rejected.
+- **Observability is a feature.** Each stage reports what it processed and what it dropped.
+- **Infrastructure is reviewable.** Changes to the environment go through version control like code.
+
+This mirrors the work I do at HSBC on Google Cloud with Terraform and CI/CD, applied to a data platform I can share publicly.
+
+## Limitations
+
+- No benchmark results are published yet. Throughput, latency and recovery claims will appear only once they have been measured and can be reproduced.
+- It is a learning and demonstration platform, not a production service.
+
+## Roadmap
+
+- Publish reproducible benchmarks with the exact commands used.
+- Add replay of quarantined records.
+- Document operating the platform: runbooks and alert thresholds.
