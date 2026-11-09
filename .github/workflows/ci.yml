@@ -19,8 +19,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
-      # Switch to `npm ci` once package-lock.json has been generated and committed.
+      # Once package-lock.json is committed: add `cache: npm` to the step above (it fails
+      # without a lock file) and replace `npm install` below with `npm ci`.
       - name: Install dependencies
         run: npm install --no-audit --no-fund
       - name: Lint
