@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens. Values are space-separated RGB channels so Tailwind can apply opacity. */
+:root {
+  --bg: 244 241 234;
+  --fg: 20 19 15;
+  --muted: 88 84 74;
+  --rule: 208 203 190;
+  --surface: 236 232 221;
+  --accent: 190 58 12;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: 15 15 13;
+  --fg: 232 228 218;
+  --muted: 166 161 148;
+  --rule: 52 51 46;
+  --surface: 25 25 22;
+  --accent: 255 142 82;
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    background: rgb(var(--accent) / 0.25);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  .link {
+    @apply underline decoration-rule decoration-1 underline-offset-4 transition-colors hover:decoration-accent hover:text-accent;
+  }
+
+  .tag {
+    @apply rounded-sm border border-rule px-2 py-0.5 font-mono text-xs text-muted;
+  }
+
+  .grid-backdrop {
+    background-image:
+      linear-gradient(to right, rgb(var(--rule) / 0.5) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(var(--rule) / 0.5) 1px, transparent 1px);
+    background-size: 3rem 3rem;
+    mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
