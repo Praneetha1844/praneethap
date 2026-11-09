@@ -1,4 +1,4 @@
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
@@ -65,6 +65,34 @@ describe("projects", () => {
   });
 });
 
+describe("case studies", () => {
+  const files = readdirSync(projectsDir).filter((name) => name.endsWith(".mdx"));
+  const read = (file: string) => readFileSync(`${projectsDir}${file}`, "utf-8");
+
+  it("open with a status note that says benchmarks are not published", () => {
+    for (const file of files) {
+      const firstLine = read(file).split("\n")[0] ?? "";
+      expect(firstLine, file).toMatch(/^> \*\*Status:\*\*/);
+      expect(firstLine.toLowerCase(), file).toContain("not yet published");
+    }
+  });
+
+  it("state their limitations and roadmap", () => {
+    for (const file of files) {
+      const text = read(file);
+      expect(text, file).toMatch(/^## Limitations$/m);
+      expect(text, file).toMatch(/^## Roadmap$/m);
+    }
+  });
+
+  it("make no numeric performance claims", () => {
+    const numeric = /\d+(\.\d+)?\s?(%|x|ms|k\b|MB|GB|req)/i;
+    for (const file of files) {
+      expect(read(file), file).not.toMatch(numeric);
+    }
+  });
+});
+
 describe("profile and records", () => {
   it("has a valid e-mail address and https profile links", () => {
     expect(profile.email).toMatch(/^[^@\s]+@[^@\s]+\.[^@\s]+$/);
@@ -88,6 +116,12 @@ describe("profile and records", () => {
 
   it("marks exactly one role as current", () => {
     expect(experience.filter((entry) => entry.current)).toHaveLength(1);
+  });
+
+  it("only states a location when one is known", () => {
+    for (const entry of experience) {
+      if (entry.location !== undefined) expect(entry.location.trim(), entry.id).not.toBe("");
+    }
   });
 
   it("has certifications with names", () => {

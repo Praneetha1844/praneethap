@@ -7,6 +7,8 @@ import sitemap from "@/app/sitemap";
 
 afterEach(() => {
   vi.unstubAllEnvs();
+  vi.unstubAllGlobals();
+  vi.restoreAllMocks();
   document.documentElement.removeAttribute("data-theme");
   localStorage.clear();
 });
@@ -59,5 +61,27 @@ describe("theme", () => {
     localStorage.setItem("theme", "dark");
     new Function(themeInitScript)();
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+  });
+
+  it("falls back to the system preference when nothing is stored", () => {
+    vi.stubGlobal("matchMedia", () => ({ matches: true }));
+    new Function(themeInitScript)();
+    expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+  });
+
+  it("falls back to light when storage is blocked", () => {
+    vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+      throw new Error("blocked");
+    });
+    new Function(themeInitScript)();
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+  });
+
+  it("still applies a theme when storage cannot be written", () => {
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new Error("blocked");
+    });
+    applyTheme("dark");
+    expect(readTheme()).toBe("dark");
   });
 });
