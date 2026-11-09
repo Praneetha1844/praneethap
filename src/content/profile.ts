@@ -11,7 +11,7 @@ export const profile: Profile = {
   about: [
     "I am a software engineer on the Cloud & DevOps team at HSBC in Hyderabad. My day-to-day work is provisioning and managing infrastructure on Google Cloud with Terraform, automating deployments, and keeping CI/CD pipelines stable.",
     "I studied Computer & Data Science. The projects on this site explore related questions: how to make data systems dependable, how to measure them, and where AI can help with software quality and security without being trusted blindly.",
-    "Earlier I mentored more than 500 students on data structures and algorithms, interned in full-stack development and embedded systems, and organised TEDx and UiPath events at my college.",
+    "Earlier I mentored more than 500 students on data structures and algorithms, interned in full-stack development and embedded systems, and organised a TEDx event at my college and UiPath's Hack-A-Bot as a Student Developer Champion.",
   ],
   links: [
     { label: "GitHub", href: "https://github.com/Praneetha1844" },

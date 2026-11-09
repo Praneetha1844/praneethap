@@ -26,7 +26,8 @@ export interface ExperienceEntry {
   organisation: string;
   role: string;
   period: string;
-  location: string;
+  /** Omitted when the source documents do not state one. */
+  location?: string;
   current?: boolean;
   highlights: string[];
 }

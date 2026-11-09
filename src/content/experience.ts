@@ -30,7 +30,6 @@ export const experience: ExperienceEntry[] = [
     organisation: "IEEE Bombay",
     role: "Full Stack Developer Intern",
     period: "Sep 2023 – Oct 2023",
-    location: "Remote",
     highlights: [
       "Integrated REST APIs for a Readability Score Generator that helps writers gauge and adjust the readability of their content.",
     ],
@@ -40,7 +39,7 @@ export const experience: ExperienceEntry[] = [
     organisation: "Ananth Technologies Pvt Ltd",
     role: "Embedded Systems Intern",
     period: "Aug 2021 – Jan 2022",
-    location: "Hi-Tech City, Hyderabad",
+    location: "Hi-Tech City, India",
     highlights: ["Designed circuits using OrCAD and completed several embedded systems projects."],
   },
 ];

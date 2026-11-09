@@ -6,7 +6,7 @@ export function ContactSection() {
   return (
     <Section id="contact" index="07" title="Contact">
       <p className="max-w-xl text-lg leading-relaxed">
-        The quickest way to reach me is by e-mail. I am also on LinkedIn and GitHub.
+        You can reach me by e-mail. I am also on LinkedIn and GitHub.
       </p>
       <p className="mt-6 font-display text-3xl tracking-tight md:text-4xl">
         <a href={`mailto:${profile.email}`} className="link">

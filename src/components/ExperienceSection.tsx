@@ -18,7 +18,7 @@ export function ExperienceSection() {
                   {entry.current ? <span className="sr-only"> (current role)</span> : null}
                 </p>
               </header>
-              <p className="mt-1 text-sm text-muted">{entry.location}</p>
+              {entry.location ? <p className="mt-1 text-sm text-muted">{entry.location}</p> : null}
               <ul className="mt-4 list-disc space-y-2 pl-5 marker:text-accent">
                 {entry.highlights.map((highlight) => (
                   <li key={highlight} className="max-w-3xl leading-relaxed">
