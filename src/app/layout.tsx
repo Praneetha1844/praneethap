@@ -13,7 +13,7 @@ const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
 const siteUrl = getSiteUrl();
-const description = `${profile.positioning}`;
+const description = profile.positioning;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
