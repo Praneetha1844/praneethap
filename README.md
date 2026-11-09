@@ -36,9 +36,10 @@ Requires Node.js 20.9 or newer.
 ## Before publishing
 
 - Put your CV at `public/cv.pdf`. The hero and contact sections link to `/cv.pdf`; until the file exists the link returns 404.
-- Run `npm install` once and commit the generated `package-lock.json`, then change the CI install step to `npm ci`.
+- Run `npm install` once and commit the generated `package-lock.json`, then add `cache: npm` and switch the install step to `npm ci` in `.github/workflows/ci.yml` (the npm cache needs a lock file).
 - Read each project page and confirm it still matches the repository it describes.
 - Check that every GitHub repository linked from the site exists and is public.
+- Do not fill gaps with guesses: if a fact is not in your own CV or records, leave it out (the `location` of an experience entry is optional for this reason).
 
 ## Editing content
 
@@ -71,7 +72,9 @@ docs/                   architecture and decision records
 
 ## Documentation
 
+- [Index](docs/index.md)
 - [Architecture](docs/ARCHITECTURE.md)
+- [Roadmap](docs/ROADMAP.md)
 - Decision records: [typed content and MDX](docs/adr/0001-typed-content-and-mdx.md), [theme without a flash](docs/adr/0002-theme-via-css-variables-and-inline-script.md), [static-first, no tracking](docs/adr/0003-static-first-no-tracking.md)
 
 ## Accessibility
